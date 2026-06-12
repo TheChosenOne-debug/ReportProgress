@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rumahtengah × Relay — Animation Mockups</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  background:#060606;
+  font-family:'JetBrains Mono',monospace;
+  padding:24px 14px 60px;
+  color:#F0F0F0;
+}
+
+h1 {
+  font-size:.44rem; letter-spacing:4px; text-transform:uppercase;
+  color:#1E1E1E; text-align:center; margin-bottom:4px;
+}
+.sub { font-size:.38rem; letter-spacing:2px; color:#141414; text-align:center; margin-bottom:28px; }
+
+.group-lbl {
+  font-size:.42rem; letter-spacing:3px; text-transform:uppercase; color:#222;
+  margin:24px 0 12px; display:flex; align-items:center; gap:8px;
+}
+.group-lbl::after { content:''; flex:1; height:1px; background:#111; }
+
+.cards { display:flex; flex-direction:column; gap:8px; }
+
+.card {
+  background:#0A0A0A; border:1px solid #161616; border-radius:10px;
+  overflow:hidden; cursor:pointer;
+  transition:border-color .15s;
+}
+.card:active { border-color:rgba(217,79,0,.3); }
+
+.card-top {
+  padding:8px 14px; border-bottom:1px solid #111;
+  display:flex; align-items:center; gap:8px;
+}
+.card-n { font-size:.38rem; color:#1E1E1E; width:20px; }
+.card-name { font-size:.52rem; font-weight:700; color:#666; flex:1; }
+.card-desc { font-size:.4rem; color:#222; }
+.play-btn {
+  width:26px; height:26px; border-radius:50%;
+  border:1px solid #1E1E1E; background:#111;
+  color:#333; font-size:.5rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .1s; flex-shrink:0;
+}
+
+.stage {
+  height:100px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+  background:#060606;
+}
+
+/* ── SHARED BRAND ELEMENTS ── */
+.rt {
+  font-family:'Playfair Display',Georgia,serif;
+  color:#F0F0F0;
+}
+
+.relay-brand {
+  font-family:'JetBrains Mono',monospace;
+  font-weight:800;
+  letter-spacing:6px;
+  color:#D94F00;
+  text-transform:uppercase;
+  position:relative;
+}
+
+.relay-brand::before {
+  content:'RELAY'; position:absolute; top:0; left:0;
+  color:transparent; font-size:inherit; font-weight:inherit;
+  letter-spacing:inherit; pointer-events:none;
+  animation:sn 9s steps(1) 3s infinite;
+}
+
+@keyframes sn {
+  0%,93%,100%{opacity:0}
+  94%{opacity:1;text-shadow:2px 0 rgba(255,0,0,.4),-2px 0 rgba(0,255,255,.4)}
+  95%{opacity:0}
+  96%{opacity:1;text-shadow:-1px 0 rgba(0,255,0,.3),1px 0 rgba(255,0,200,.3)}
+  97%{opacity:0}
+}
+
+@keyframes hb { 0%,100%{color:#D94F00} 50%{color:#FF6B35;text-shadow:0 0 10px rgba(217,79,0,.2)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes slideR { from{opacity:0;transform:translateX(-16px)} to{opacity:1;transform:translateX(0)} }
+@keyframes slideL { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:translateX(0)} }
+@keyframes scaleIn { from{opacity:0;transform:scale(.7)} to{opacity:1;transform:scale(1)} }
+@keyframes blurIn { from{opacity:0;filter:blur(8px)} to{opacity:1;filter:blur(0)} }
+@keyframes typeIn { from{opacity:0;letter-spacing:20px} to{opacity:1;letter-spacing:2px} }
+@keyframes dropIn { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes revealR { from{clip-path:inset(0 100% 0 0)} to{clip-path:inset(0 0% 0 0)} }
+@keyframes revealL { from{clip-path:inset(0 0 0 100%)} to{clip-path:inset(0 0 0 0%)} }
+@keyframes glowPulse { 0%,100%{text-shadow:none} 50%{text-shadow:0 0 20px rgba(217,79,0,.4)} }
+
+/* ── POWERED BY LINE ── */
+.pow {
+  font-family:'JetBrains Mono',monospace;
+  font-size:.34rem; letter-spacing:2px;
+  text-transform:uppercase; color:#2A2A2A;
+}
+
+.divline {
+  width:1px; height:24px; background:#1E1E1E;
+  margin:0 14px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Rumahtengah × Relay</h1>
+<div class="sub">4 layouts · 5 animations each · tap to replay</div>
+
+<!-- ══ OPTION A — SIDE BY SIDE ══ -->
+<div class="group-lbl">A — Side by Side</div>
+<div class="cards" id="grpA"></div>
+
+<!-- ══ OPTION B — RELAY LEADS ══ -->
+<div class="group-lbl">B — Relay First</div>
+<div class="cards" id="grpB"></div>
+
+<!-- ══ OPTION C — MINIMAL × ══ -->
+<div class="group-lbl">C — Minimal Pairing</div>
+<div class="cards" id="grpC"></div>
+
+<!-- ══ OPTION D — SPLASH ══ -->
+<div class="group-lbl">D — Splash Screen</div>
+<div class="cards" id="grpD"></div>
+
+<script>
+// ── ANIMATION DEFINITIONS ──
+
+const animA = [
+  {
+    name: 'Fade Up Together',
+    desc: 'Both brands rise in sequence',
+    build: () => `
+      <div style="display:flex;align-items:center;gap:0">
+        <div class="rt" style="font-size:1.5rem;font-weight:400;letter-spacing:2px;opacity:0;animation:fadeUp .7s ease-out .2s forwards">rumahtengah</div>
+        <div class="divline" style="opacity:0;animation:fadeIn .3s ease .8s forwards"></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px">
+          <div class="pow" style="opacity:0;animation:fadeIn .4s ease .9s forwards">powered by</div>
+          <div class="relay-brand" style="font-size:.8rem;opacity:0;animation:fadeUp .6s ease 1s forwards,hb 3s ease 1.6s infinite">RELAY</div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Slide from Sides',
+    desc: 'RT slides right, Relay slides left',
+    build: () => `
+      <div style="display:flex;align-items:center;gap:0">
+        <div class="rt" style="font-size:1.5rem;font-weight:400;letter-spacing:2px;opacity:0;animation:slideR .6s cubic-bezier(.34,1.56,.64,1) .2s forwards">rumahtengah</div>
+        <div class="divline" style="opacity:0;animation:fadeIn .3s ease .7s forwards"></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px">
+          <div class="pow" style="opacity:0;animation:fadeIn .4s ease .8s forwards">powered by</div>
+          <div class="relay-brand" style="font-size:.8rem;opacity:0;animation:slideL .6s cubic-bezier(.34,1.56,.64,1) .3s forwards,hb 3s ease 1s infinite">RELAY</div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Blur Reveal',
+    desc: 'Both blur in from soft focus',
+    build: () => `
+      <div style="display:flex;align-items:center;gap:0">
+        <div class="rt" style="font-size:1.5rem;font-weight:400;letter-spacing:2px;opacity:0;animation:blurIn .8s ease .2s forwards">rumahtengah</div>
+        <div class="divline" style="opacity:0;animation:fadeIn .3s ease .9s forwards"></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px">
+          <div class="pow" style="opacity:0;animation:fadeIn .4s ease 1s forwards">powered by</div>
+          <div class="relay-brand" style="font-size:.8rem;opacity:0;animation:blurIn .8s ease .5s forwards,hb 3s ease 1.3s infinite">RELAY</div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'RT Reveals, Relay Drops',
+    desc: 'RT clips in, Relay drops from above',
+    build: () => `
+      <div style="display:flex;align-items:center;gap:0">
+        <div class="rt" style="font-size:1.5rem;font-weight:400;letter-spacing:2px;animation:revealR .8s cubic-bezier(.4,0,.2,1) .2s both">rumahtengah</div>
+        <div class="divline" style="opacity:0;animation:fadeIn .3s ease .9s forwards"></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px">
+          <div class="pow" style="opacity:0;animation:fadeIn .4s ease 1s forwards">powered by</div>
+          <div class="relay-brand" style="font-size:.8rem;opacity:0;animation:dropIn .5s cubic-bezier(.34,1.56,.64,1) .8s forwards,hb 3s ease 1.4s infinite">RELAY</div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Scale + Glow',
+    desc: 'Both scale in, Relay glows orange on entry',
+    build: () => `
+      <div style="display:flex;align-items:center;gap:0">
+        <div class="rt" style="font-size:1.5rem;font-weight:400;letter-spacing:2px;opacity:0;animation:scaleIn .7s cubic-bezier(.34,1.56,.64,1) .2s forwards">rumahtengah</div>
+        <div class="divline" style="opacity:0;animation:fadeIn .3s ease .8s forwards"></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px">
+          <div class="pow" style="opacity:0;animation:fadeIn .4s ease .9s forwards">powered by</div>
+          <div class="relay-brand" style="font-size:.8rem;opacity:0;animation:scaleIn .6s cubic-bezier(.34,1.56,.64,1) .5s forwards,glowPulse 1.5s ease 1.1s 2,hb 3s ease 4s infinite">RELAY</div>
+        </div>
+      </div>`
+  },
+];
+
+const animB = [
+  {
+    name: 'Relay Then RT',
+    desc: 'RELAY stamps in, RT fades below',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="relay-brand" style="font-size:1.5rem;letter-spacing:10px;opacity:0;animation:scaleIn .5s cubic-bezier(.34,1.56,.64,1) .2s forwards,hb 3s ease .8s infinite">RELAY</div>
+        <div style="display:flex;align-items:center;gap:8px;opacity:0;animation:fadeUp .5s ease .8s forwards">
+          <div class="pow">powering</div>
+          <div style="width:3px;height:3px;border-radius:50%;background:#222"></div>
+          <div class="rt" style="font-size:.9rem;font-weight:400;letter-spacing:2px;color:#666">rumahtengah</div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Relay Expands',
+    desc: 'RELAY letter-spacing expands on entry',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="relay-brand" style="font-size:1.5rem;letter-spacing:10px;opacity:0;animation:typeIn .7s ease .2s forwards,hb 3s ease 1s infinite">RELAY</div>
+        <div style="display:flex;align-items:center;gap:8px;opacity:0;animation:fadeIn .6s ease .9s forwards">
+          <div class="pow">powering</div>
+          <div style="width:3px;height:3px;border-radius:50%;background:#222"></div>
+          <div class="rt" style="font-size:.9rem;font-weight:400;letter-spacing:2px;color:#666">rumahtengah</div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Blur + Rise',
+    desc: 'Both blur in from bottom',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="relay-brand" style="font-size:1.5rem;letter-spacing:10px;opacity:0;animation:blurIn .6s ease .2s forwards,hb 3s ease .9s infinite">RELAY</div>
+        <div style="display:flex;align-items:center;gap:8px;opacity:0;animation:fadeUp .5s ease .7s forwards">
+          <div class="pow">powering</div>
+          <div style="width:3px;height:3px;border-radius:50%;background:#222"></div>
+          <div class="rt" style="font-size:.9rem;font-weight:400;letter-spacing:2px;color:#666">rumahtengah</div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Relay Drops, RT Rises',
+    desc: 'Relay from top, RT from bottom',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="relay-brand" style="font-size:1.5rem;letter-spacing:10px;opacity:0;animation:dropIn .6s cubic-bezier(.34,1.56,.64,1) .2s forwards,hb 3s ease .9s infinite">RELAY</div>
+        <div style="display:flex;align-items:center;gap:8px;opacity:0;animation:fadeUp .5s cubic-bezier(.34,1.56,.64,1) .5s forwards">
+          <div class="pow">powering</div>
+          <div style="width:3px;height:3px;border-radius:50%;background:#222"></div>
+          <div class="rt" style="font-size:.9rem;font-weight:400;letter-spacing:2px;color:#666">rumahtengah</div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Glow Entry',
+    desc: 'RELAY glows on entry, RT fades soft',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="relay-brand" style="font-size:1.5rem;letter-spacing:10px;opacity:0;animation:fadeUp .5s ease .2s forwards,glowPulse 1.2s ease .8s 2,hb 3s ease 3s infinite">RELAY</div>
+        <div style="display:flex;align-items:center;gap:8px;opacity:0;animation:fadeIn .8s ease 1s forwards">
+          <div class="pow">powering</div>
+          <div style="width:3px;height:3px;border-radius:50%;background:#222"></div>
+          <div class="rt" style="font-size:.9rem;font-weight:400;letter-spacing:2px;color:#555">rumahtengah</div>
+        </div>
+      </div>`
+  },
+];
+
+const animC = [
+  {
+    name: 'Minimal Fade',
+    desc: 'Clean fade with × connecting',
+    build: () => `
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <div class="rt" style="font-size:2rem;font-weight:400;opacity:0;animation:fadeUp .8s ease .2s forwards">rumahtengah</div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:.7rem;color:#1A1A1A;opacity:0;animation:fadeIn .3s ease .8s forwards">×</div>
+        <div class="relay-brand" style="font-size:.65rem;opacity:0;animation:fadeUp .6s ease .9s forwards,hb 3s ease 1.5s infinite">RELAY</div>
+      </div>`
+  },
+  {
+    name: 'Reveal Left to Right',
+    desc: 'Clips across like a curtain',
+    build: () => `
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <div class="rt" style="font-size:2rem;font-weight:400;animation:revealR .8s ease .1s both">rumahtengah</div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:.7rem;color:#1A1A1A;animation:revealR .3s ease .7s both">×</div>
+        <div class="relay-brand" style="font-size:.65rem;animation:revealR .6s ease .8s both;animation-fill-mode:both">RELAY</div>
+      </div>`
+  },
+  {
+    name: 'Italic + Snap',
+    desc: 'RT italic then straightens, Relay snaps',
+    build: () => `
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <div class="rt" style="font-size:2rem;font-style:italic;font-weight:400;opacity:0;animation:fadeUp .7s ease .2s forwards">rumahtengah</div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:.7rem;color:#1A1A1A;opacity:0;animation:fadeIn .3s ease .8s forwards">×</div>
+        <div class="relay-brand" style="font-size:.65rem;opacity:0;animation:scaleIn .5s cubic-bezier(.34,1.56,.64,1) .9s forwards,hb 3s ease 1.5s infinite">RELAY</div>
+      </div>`
+  },
+  {
+    name: 'Both Blur',
+    desc: 'Soft focus to sharp simultaneously',
+    build: () => `
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <div class="rt" style="font-size:2rem;font-weight:400;opacity:0;animation:blurIn .9s ease .2s forwards">rumahtengah</div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:.7rem;color:#1A1A1A;opacity:0;animation:fadeIn .3s ease .8s forwards">×</div>
+        <div class="relay-brand" style="font-size:.65rem;opacity:0;animation:blurIn .7s ease .4s forwards,hb 3s ease 1.2s infinite">RELAY</div>
+      </div>`
+  },
+  {
+    name: 'Stagger Scale',
+    desc: 'Each element scales in with offset',
+    build: () => `
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <div class="rt" style="font-size:2rem;font-weight:400;opacity:0;animation:scaleIn .6s cubic-bezier(.34,1.56,.64,1) .2s forwards">rumahtengah</div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:.7rem;color:#1A1A1A;opacity:0;animation:scaleIn .4s cubic-bezier(.34,1.56,.64,1) .6s forwards">×</div>
+        <div class="relay-brand" style="font-size:.65rem;opacity:0;animation:scaleIn .5s cubic-bezier(.34,1.56,.64,1) .8s forwards,hb 3s ease 1.4s infinite">RELAY</div>
+      </div>`
+  },
+];
+
+const animD = [
+  {
+    name: 'Splash Rise',
+    desc: 'RT rises, powered by fades beneath',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="rt" style="font-size:2.2rem;font-weight:700;letter-spacing:3px;opacity:0;animation:fadeUp .9s cubic-bezier(.34,1.56,.64,1) .2s forwards">rumahtengah</div>
+        <div style="display:flex;align-items:center;gap:8px;opacity:0;animation:fadeIn .5s ease 1s forwards">
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:.34rem;letter-spacing:2.5px;text-transform:uppercase;color:#2A2A2A">powered by <span class="relay-brand" style="font-size:.34rem;letter-spacing:3px;animation:hb 3s ease 1.5s infinite">RELAY</span></div>
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Splash Blur',
+    desc: 'Full splash blurs into focus',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:blurIn 1s ease .2s forwards">
+        <div class="rt" style="font-size:2.2rem;font-weight:700;letter-spacing:3px">rumahtengah</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:.34rem;letter-spacing:2.5px;text-transform:uppercase;color:#2A2A2A">powered by <span class="relay-brand" style="font-size:.34rem;letter-spacing:3px;animation:hb 3s ease 1.2s infinite">RELAY</span></div>
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'RT Clips Down',
+    desc: 'RT reveals top to bottom, lines extend',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="rt" style="font-size:2.2rem;font-weight:700;letter-spacing:3px;animation:revealR 1s ease .1s both">rumahtengah</div>
+        <div style="display:flex;align-items:center;gap:8px;opacity:0;animation:fadeUp .5s ease .9s forwards">
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:.34rem;letter-spacing:2.5px;text-transform:uppercase;color:#2A2A2A">powered by <span class="relay-brand" style="font-size:.34rem;letter-spacing:3px;animation:hb 3s ease 1.5s infinite">RELAY</span></div>
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Italic RT',
+    desc: 'RT in italic serif, tag fades soft',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="rt" style="font-size:2.2rem;font-style:italic;font-weight:400;letter-spacing:2px;opacity:0;animation:fadeUp .8s ease .2s forwards">rumahtengah</div>
+        <div style="display:flex;align-items:center;gap:8px;opacity:0;animation:fadeIn .6s ease 1s forwards">
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:.34rem;letter-spacing:2.5px;text-transform:uppercase;color:#252525">powered by <span class="relay-brand" style="font-size:.34rem;letter-spacing:3px;animation:hb 3s ease 1.6s infinite">RELAY</span></div>
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+        </div>
+      </div>`
+  },
+  {
+    name: 'Glow Splash',
+    desc: 'RT fades in, RELAY glows then settles',
+    build: () => `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="rt" style="font-size:2.2rem;font-weight:700;letter-spacing:3px;opacity:0;animation:fadeUp .8s ease .2s forwards">rumahtengah</div>
+        <div style="display:flex;align-items:center;gap:8px;opacity:0;animation:fadeIn .5s ease .9s forwards">
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:.34rem;letter-spacing:2.5px;text-transform:uppercase;color:#2A2A2A">powered by <span class="relay-brand" style="font-size:.34rem;letter-spacing:3px;animation:glowPulse 1.2s ease 1s 2,hb 3s ease 3.5s infinite">RELAY</span></div>
+          <div style="width:20px;height:1px;background:#1A1A1A"></div>
+        </div>
+      </div>`
+  },
+];
+
+// ── BUILD CARDS ──
+function buildGroup(containerId, optLetter, anims) {
+  const container = document.getElementById(containerId);
+  anims.forEach((anim, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="card-n">${String(i+1).padStart(2,'0')}</div>
+        <div class="card-name">${anim.name}</div>
+        <div class="card-desc">${anim.desc}</div>
+        <div class="play-btn">▶</div>
+      </div>
+      <div class="stage" id="stage-${optLetter}${i}">
+        ${anim.build()}
+      </div>`;
+
+    card.onclick = () => {
+      const stage = document.getElementById(`stage-${optLetter}${i}`);
+      stage.innerHTML = anim.build();
+    };
+
+    container.appendChild(card);
+  });
+}
+
+buildGroup('grpA', 'A', animA);
+buildGroup('grpB', 'B', animB);
+buildGroup('grpC', 'C', animC);
+buildGroup('grpD', 'D', animD);
+</script>
+</body>
+</html>
